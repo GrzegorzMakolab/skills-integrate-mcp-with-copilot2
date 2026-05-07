@@ -5,7 +5,9 @@ A super simple FastAPI application that allows students to view and sign up for 
 ## Features
 
 - View all available extracurricular activities
-- Sign up for activities
+- Sign up for activities (teacher-only)
+- Unregister students from activities (teacher-only)
+- Teacher login/logout with credentials stored in JSON
 
 ## Getting Started
 
@@ -30,7 +32,17 @@ A super simple FastAPI application that allows students to view and sign up for 
 | Method | Endpoint                                                          | Description                                                         |
 | ------ | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
 | GET    | `/activities`                                                     | Get all activities with their details and current participant count |
-| POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Sign up for an activity                                             |
+| POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Sign up for an activity (teacher login required)                    |
+| DELETE | `/activities/{activity_name}/unregister?email=student@mergington.edu` | Unregister from an activity (teacher login required)            |
+| POST   | `/auth/login`                                                     | Teacher login; returns admin token                                 |
+| POST   | `/auth/logout`                                                    | Teacher logout (uses `X-Admin-Token`)                              |
+| GET    | `/auth/me`                                                        | Validate current teacher session (`X-Admin-Token`)                 |
+
+## Teacher Credentials
+
+Teacher usernames and passwords are stored in `teachers.json` and loaded by the backend at startup.
+
+The frontend provides a user icon in the top-right corner for teacher login. After login, signup and unregister actions are authorized with the session token.
 
 ## Data Model
 
